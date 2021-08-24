@@ -1,11 +1,24 @@
 <template>
   <div class="wrapper">
+    <!-- 顶部地址 -->
     <div class="position">
       <span class="iconfont position__icon">&#xe61f;</span>
       <span>福建师范大学旗山校区榕院3</span>
       <span class="iconfont position__notice">&#xe811;</span>
     </div>
+    <div class="search">
+      <span class="iconfont">&#xe61e;</span>
+      <span>山姆会员商店优惠商品</span>
+    </div>
+    <div class="banner">
+      <img
+        src="http://www.dell-lee.com/imgs/vue3/banner.jpg"
+        alt="banner"
+        class="banner__image"
+      />
+    </div>
   </div>
+  <!-- 底部docker -->
   <div class="docker">
     <div class="docker__item docker__item--active">
       <div class="iconfont">&#xe637;</div>
@@ -38,6 +51,7 @@
   bottom: 0.5rem;
   right: 0;
   padding: 0 0.18rem;
+  //顶部地址样式
   .position {
     padding: 0.16rem 0.24rem 0.16rem 0;
     font-size: 0.16rem;
@@ -58,7 +72,32 @@
       right: 0;
     }
   }
+
+  //顶部搜索框样式
+  .search {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.16rem;
+    font-size: 0.14rem;
+    color: #b7b7b7;
+    background: #f5f5f5;
+    line-height: 0.32rem;
+    margin-bottom: 0.12rem;
+    .iconfont {
+      padding: 0 0.08rem 0 0.16rem;
+    }
+  }
+  .banner {
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 25.4%;
+    &__image {
+      width: 100%;
+    }
+  }
 }
+
+//底部docker样式
 .docker {
   box-sizing: border-box;
   position: absolute;
