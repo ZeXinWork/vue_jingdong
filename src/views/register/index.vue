@@ -16,11 +16,20 @@
       <input
         type="text"
         class="wrapper__input__content"
+        placeholder="请确认密码密码"
+      />
+    </div>
+    <div class="wrapper__input">
+      <input
+        type="text"
+        class="wrapper__input__content"
         placeholder="请输入密码"
       />
     </div>
-    <div class="wrapper__login-button" @click="handleLogin">登录</div>
-    <div class="wrapper__login-link" @click="handleToRegister">立即注册</div>
+    <div class="wrapper__register-button" @click="handleRegister">注册</div>
+    <div class="wrapper__register-link" @click="handleToLogin">
+      已有账号立即登录
+    </div>
   </div>
 </template>
 <script>
@@ -29,14 +38,14 @@ export default {
   name: 'Login',
   setup() {
     const router = useRouter()
-    const handleLogin = () => {
+    const handleRegister = () => {
       window.localStorage.setItem('isLogin', true)
       router.push({ name: 'Home' })
     }
-    const handleToRegister = () => {
-      router.push({ name: 'Register' })
+    const handleToLogin = () => {
+      router.push({ name: 'Login' })
     }
-    return { handleLogin, handleToRegister }
+    return { handleRegister, handleToLogin }
   }
 }
 </script>
@@ -76,7 +85,7 @@ export default {
       }
     }
   }
-  &__login-button {
+  &__register-button {
     background: #0091ff;
     box-shadow: 0 0.04rem 0.08rem 0 rgba(0, 145, 255, 0.32);
     margin: 0.32rem 0.4rem 0.16rem 0.4rem;
@@ -87,7 +96,7 @@ export default {
     text-align: center;
     line-height: 0.48rem;
   }
-  &__login-link {
+  &__register-link {
     font-size: 0.14rem;
     color: $content-notice-fontcolor;
     text-align: center;
