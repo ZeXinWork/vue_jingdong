@@ -9,6 +9,7 @@
       <input
         type="text"
         class="wrapper__input__content"
+        v-model="username"
         placeholder="请输入手机号"
       />
     </div>
@@ -16,6 +17,7 @@
       <input
         type="text"
         class="wrapper__input__content"
+        v-model="password"
         placeholder="请确认密码密码"
       />
     </div>
@@ -23,6 +25,7 @@
       <input
         type="text"
         class="wrapper__input__content"
+        v-model="ensurement"
         placeholder="请输入密码"
       />
     </div>
@@ -30,22 +33,74 @@
     <div class="wrapper__register-link" @click="handleToLogin">
       已有账号立即登录
     </div>
+    <Toast :massage="toastMessage" v-if="show" />
   </div>
 </template>
 <script>
 import { useRouter } from 'vue-router'
+import { reactive, toRefs } from 'vue'
+import { post } from '../../utils/request'
+import Toast, { useToastEffect } from '../../components/Toast.vue'
+
+const useUserRegisterEffect = showToast => {
+  const router = useRouter()
+  const data = reactive({ username: '', password: '', ensurement: '' })
+  const { username, password, ensurement } = toRefs(data)
+
+  const handleRegister = async () => {
+    try {
+      const result = await post('/api/user/register', {
+        username: data.username,
+        password: data.password
+      })
+      if (result.errno === 0) {
+        router.push({ name: 'Login' })
+      } else {
+        showToast('注册失败！请重试')
+      }
+    } catch (error) {
+      showToast('请求失败！请重试')
+    }
+  }
+  return {
+    username,
+    password,
+    ensurement,
+    handleRegister
+  }
+}
+const useSwitchLogin = () => {
+  const router = useRouter()
+  const handleToLogin = () => {
+    router.push({ name: 'Login' })
+  }
+  return { handleToLogin }
+}
 export default {
   name: 'Login',
+  components: {
+    Toast
+  },
   setup() {
-    const router = useRouter()
-    const handleRegister = () => {
-      window.localStorage.setItem('isLogin', true)
-      router.push({ name: 'Home' })
+    const { show, toastMessage, showToast } = useToastEffect()
+    const { handleToLogin } = useSwitchLogin()
+    const {
+      username,
+      password,
+      ensurement,
+      handleRegister
+    } = useUserRegisterEffect(showToast)
+
+    return {
+      handleRegister,
+      handleToLogin,
+      username,
+      password,
+      ensurement,
+      show,
+      toastMessage,
+      showToast
     }
-    const handleToLogin = () => {
-      router.push({ name: 'Login' })
-    }
-    return { handleRegister, handleToLogin }
   }
 }
 </script>
