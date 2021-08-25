@@ -10,62 +10,84 @@
         type="text"
         class="wrapper__input__content"
         placeholder="请输入手机号"
-        v-model="data.username"
+        v-model="username"
       />
     </div>
     <div class="wrapper__input">
       <input
         class="wrapper__input__content"
         placeholder="请输入密码"
-        v-model="data.password"
+        v-model="password"
         type="password"
       />
     </div>
     <div class="wrapper__login-button" @click="handleLogin">登录</div>
     <div class="wrapper__login-link" @click="handleToRegister">立即注册</div>
   </div>
-  <Toast :massage="toastData.toastMessage" v-if="toastData.showToast" />
+  <Toast :massage="toastMessage" v-if="show" />
 </template>
 <script>
-import { reactive } from 'vue'
+import { reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { post } from '../../utils/request'
 import Toast, { useToastEffect } from '../../components/Toast.vue'
 
+// 用户登录
+const useUserLoginEffect = showToast => {
+  const router = useRouter()
+  const data = reactive({
+    username: '',
+    password: ''
+  })
+  const handleLogin = async () => {
+    try {
+      const result = await post('/sapi/user/login', {
+        username: data.username,
+        password: data.password
+      })
+      if (result.errno === 0) {
+        window.localStorage.setItem('isLogin', true)
+        router.push({ name: 'Home' })
+      } else {
+        showToast('登录失败！请重试')
+      }
+    } catch (error) {
+      showToast('请求失败！请重试')
+    }
+  }
+
+  const { username, password } = toRefs(data)
+  return { handleLogin, username, password }
+}
+
+// 切换至注册页面
+const useUserRegisterEffect = () => {
+  const router = useRouter()
+  const handleToRegister = () => {
+    router.push({ name: 'Register' })
+  }
+  return { handleToRegister }
+}
 export default {
   name: 'Login',
   components: {
     Toast
   },
   setup() {
-    const router = useRouter()
-    const data = reactive({
-      username: '',
-      password: ''
-    })
-
-    const { toastData, showToast } = useToastEffect()
-
-    const handleLogin = async () => {
-      try {
-        const result = await post('/sapi/user/login', {
-          username: data.username,
-          password: data.password
-        })
-        if (result.errno === 0) {
-          window.localStorage.setItem('isLogin', true)
-          router.push({ name: 'Home' })
-        } else {
-          showToast('登录失败！请重试')
-        }
-      } catch (error) {
-        showToast('请求失败！请重试')
-      }
+    // toast相关操作
+    const { show, toastMessage, showToast } = useToastEffect()
+    // login相关操作
+    const { handleLogin, username, password } = useUserLoginEffect(showToast)
+    // 切换至注册页面
+    const { handleToRegister } = useUserRegisterEffect()
+    return {
+      handleLogin,
+      handleToRegister,
+      username,
+      password,
+      show,
+      toastMessage
     }
-    const handleToRegister = () => {
-      router.push({ name: 'Register' })
-    }
-    return { handleLogin, handleToRegister, data, toastData }
   }
 }
 </script>

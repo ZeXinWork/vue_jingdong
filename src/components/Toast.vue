@@ -2,25 +2,26 @@
   <div class="toast">{{ massage }}</div>
 </template>
 <script>
-import { reactive } from 'vue'
+import { reactive, toRefs } from 'vue'
 export default {
   props: ['massage']
 }
 // 控制toast显示内容，以及显示关闭
 export const useToastEffect = () => {
   const toastData = reactive({
-    showToast: false,
+    show: false,
     toastMessage: ''
   })
   const showToast = toastMessage => {
-    toastData.showToast = true
+    toastData.show = true
     toastData.toastMessage = toastMessage
     setTimeout(() => {
-      toastData.showToast = false
+      toastData.show = false
       toastData.toastMessage = ''
     }, 2000)
   }
-  return { toastData, showToast }
+  const { show, toastMessage } = toRefs(toastData)
+  return { show, toastMessage, showToast }
 }
 </script>
 
