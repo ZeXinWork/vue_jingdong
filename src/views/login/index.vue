@@ -10,13 +10,15 @@
         type="text"
         class="wrapper__input__content"
         placeholder="请输入手机号"
+        v-model="data.username"
       />
     </div>
     <div class="wrapper__input">
       <input
-        type="text"
         class="wrapper__input__content"
         placeholder="请输入密码"
+        v-model="data.password"
+        type="password"
       />
     </div>
     <div class="wrapper__login-button" @click="handleLogin">登录</div>
@@ -25,18 +27,35 @@
 </template>
 <script>
 import { useRouter } from 'vue-router'
+import { post } from '../../utils/request'
+import { reactive } from 'vue'
 export default {
   name: 'Login',
   setup() {
     const router = useRouter()
-    const handleLogin = () => {
-      window.localStorage.setItem('isLogin', true)
-      router.push({ name: 'Home' })
+
+    const data = reactive({
+      username: '',
+      password: ''
+    })
+    const handleLogin = async () => {
+      try {
+        const result = await post('/api/user/login', {
+          username: data.username,
+          password: data.password
+        })
+        if (result.errno === 0) {
+          window.localStorage.setItem('isLogin', true)
+          router.push({ name: 'Home' })
+        }
+      } catch (error) {
+        alert('请求失败')
+      }
     }
     const handleToRegister = () => {
       router.push({ name: 'Register' })
     }
-    return { handleLogin, handleToRegister }
+    return { handleLogin, handleToRegister, data }
   }
 }
 </script>
