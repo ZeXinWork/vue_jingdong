@@ -67,6 +67,7 @@ export default {
     }
   }
   &__title {
+    // 我如何让一个字体大小为10px？浏览器最小是12px 所以要用缩放
     font-size: 0.2rem;
     transform: scale(0.5, 0.5);
     transform-origin: center top;

@@ -135,7 +135,7 @@ export default {
 .banner {
   height: 0;
   overflow: hidden;
-  padding-bottom: 25.4%;
+  padding-bottom: 25.4%; //图片高宽比
   &__image {
     width: 100%;
   }

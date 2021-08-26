@@ -1,21 +1,21 @@
 <template>
   <div class="nearby">
     <h3 class="nearby__title">附近店铺</h3>
-    <div class="nearby__item" v-for="item of nearbyList" :key="item.id">
-      <img :src="item.imageUrl" class="nearby__item__img" />
+    <div class="nearby__item" v-for="item of nearbyList" :key="item._id">
+      <img :src="item.imgUrl" class="nearby__item__img" />
       <div class="nearby__content">
-        <div class="nearby__content__title">{{ item.title }}</div>
+        <div class="nearby__content__title">{{ item.name }}</div>
         <div class="nearby__content__tags">
-          <span
-            class="nearby__content__tag"
-            v-for="(innerItem, innerIndex) of item.tags"
-            :key="innerIndex"
-          >
-            {{ innerItem }}
+          <span class="nearby__content__tag">月售{{ item.sales }}+</span>
+          <span class="nearby__content__tag">
+            起送￥{{ item.expressPrice }}
+          </span>
+          <span class="nearby__content__tag">
+            配送费{{ item.expressLimit }}
           </span>
         </div>
         <p class="nearby__content__highlight">
-          {{ item.desc }}
+          {{ item.slogan }}
         </p>
       </div>
     </div>
@@ -23,25 +23,20 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { get } from '../../utils/request'
 export default {
   name: 'Nearby',
   setup() {
-    const nearbyList = [
-      {
-        id: 1,
-        imageUrl: 'http://www.dell-lee.com/imgs/vue3/near.png',
-        title: '沃尔玛',
-        tags: ['月售1万+', '起送￥5', '配送费10'],
-        desc: 'VIP尊享满89元减4元运费券（每月3张）'
-      },
-      {
-        id: 2,
-        imageUrl: 'http://www.dell-lee.com/imgs/vue3/near.png',
-        title: '沃尔玛',
-        tags: ['月售1万+', '起送￥50', '配送费10'],
-        desc: 'VIP尊享满89元减4元运费券（每月3张）'
+    const nearbyList = ref([])
+
+    const getNearbyList = async () => {
+      const result = await get('/api/shop/hot-list')
+      if (result.errno === 0) {
+        nearbyList.value = result.data
       }
-    ]
+    }
+    getNearbyList()
     return { nearbyList }
   }
 }

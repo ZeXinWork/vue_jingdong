@@ -50,8 +50,8 @@ const useUserRegisterEffect = showToast => {
   const handleRegister = async () => {
     try {
       const result = await post('/api/user/register', {
-        username: data.username,
-        password: data.password
+        username,
+        password
       })
       if (result.errno === 0) {
         router.push({ name: 'Login' })
