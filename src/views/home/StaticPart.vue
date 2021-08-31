@@ -25,6 +25,7 @@
       <p class="icons__item__desc">{{ item.name }}</p>
     </div>
   </div>
+
   <!-- 局部gap -->
   <div class="gap"></div>
 </template>
@@ -123,7 +124,7 @@ export default {
   border-radius: 0.16rem;
   font-size: 0.14rem;
   color: #b7b7b7;
-  background: #f5f5f5;
+  background: $search-color;
   line-height: 0.32rem;
   margin-bottom: 0.12rem;
   .iconfont {

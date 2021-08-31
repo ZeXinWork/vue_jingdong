@@ -1,7 +1,11 @@
 <template>
   <div class="nearby">
     <h3 class="nearby__title">附近店铺</h3>
-    <router-link to="/shop" v-for="item of nearbyList" :key="item._id">
+    <router-link
+      :to="`/shop/${item._id}`"
+      v-for="item of nearbyList"
+      :key="item._id"
+    >
       <ShopInfo :shop="item" />
     </router-link>
   </div>
@@ -11,21 +15,26 @@
 import { ref } from 'vue'
 import { get } from '../../utils/request'
 import ShopInfo from '../../components/ShopInfo'
+
+// 获取附近商铺列表
+const useNearbyList = () => {
+  const nearbyList = ref([])
+  const getNearbyList = async () => {
+    const result = await get('/api/shop/hot-list')
+    if (result.errno === 0) {
+      nearbyList.value = result.data
+    }
+  }
+  getNearbyList()
+  return { nearbyList }
+}
 export default {
   name: 'Nearby',
   components: {
     ShopInfo
   },
   setup() {
-    const nearbyList = ref([])
-    const getNearbyList = async () => {
-      const result = await get('/api/shop/hot-list')
-      if (result.errno === 0) {
-        nearbyList.value = result.data
-      }
-    }
-    getNearbyList()
-
+    const { nearbyList } = useNearbyList()
     return { nearbyList }
   }
 }

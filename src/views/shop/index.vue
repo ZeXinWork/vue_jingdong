@@ -14,49 +14,70 @@
       </div>
     </div>
     <div class="shop">
-      <ShopInfo v-for="item of shopList" :key="item._id" :shop="item" />
+      <ShopInfo :shop="item" />
     </div>
   </div>
 </template>
 
 <script>
 import ShopInfo from '../../components/ShopInfo'
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+// eslint-disable-next-line no-unused-vars
+import { ref, reactive, toRefs } from 'vue'
+// eslint-disable-next-line no-unused-vars
 import { get } from '../../utils/request'
+
+// 路由后退
+const useRouterBackEffect = () => {
+  const router = useRouter()
+  const handleBackClick = () => {
+    router.back()
+  }
+  return { handleBackClick }
+}
+
+// 获取商品详情
+const useShopInfoEffect = () => {
+  const router = useRoute()
+  const data = reactive({ item: {} })
+
+  const getItemData = async () => {
+    const result = await get(`/api/shop/${router.params.id}`)
+    if (result?.errno === 0) {
+      data.item = result.data
+    }
+  }
+
+  const { item } = toRefs(data)
+  return { item, getItemData }
+}
+
 export default {
   name: 'Shop',
   components: {
     ShopInfo
   },
   setup() {
-    const router = useRouter()
-    const shopList = ref([])
-    const getNearbyList = async () => {
-      const result = await get('/api/shop/hot-list')
-      if (result.errno === 0) {
-        shopList.value = result.data
-      }
-    }
-    const handleBackClick = () => {
-      router.back()
-    }
-    getNearbyList()
+    const { handleBackClick } = useRouterBackEffect()
+    const { item, getItemData } = useShopInfoEffect()
+    getItemData()
     return {
       handleBackClick,
-      shopList
+      item
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '../..//style/viriables.scss';
 .wrapper {
   padding: 0 0.18rem;
   .search {
     box-sizing: border-box;
-    margin: 0.2rem 0.16rem 0 0;
+    margin: 0.14rem 0rem 0.04rem 0rem;
 
+    height: 0.32rem;
     display: flex;
     &__back {
       line-height: 0.32rem;
@@ -68,7 +89,7 @@ export default {
     &__content {
       flex: 1;
       border-radius: 0.16rem;
-      background: #f5f5f5;
+      background: $search-color;
       display: flex;
       height: 0.32rem;
       &__icon {

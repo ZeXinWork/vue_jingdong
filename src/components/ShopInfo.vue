@@ -20,7 +20,7 @@ export default {
   name: 'ShopInfo',
   props: {
     shop: {
-      type: Array,
+      type: Object,
       require: true
     }
   }
