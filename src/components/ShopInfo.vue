@@ -42,13 +42,12 @@ export default {
     height: 0.56rem;
   }
 
-  &__content--bottom {
-    border-bottom: 1px solid $content-bgcolor;
-  }
   &__content {
     flex: 1;
     padding-bottom: 0.12rem;
-
+    &--bottom {
+      border-bottom: 1px solid $content-bgcolor;
+    }
     &__title {
       line-height: 0.22rem;
       font-size: 0.16rem;

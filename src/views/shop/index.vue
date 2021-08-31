@@ -13,20 +13,21 @@
         />
       </div>
     </div>
-    <div>
-      <ShopInfo :shop="item" :noBottom="true" />
-    </div>
   </div>
+  <div class="shop_content">
+    <ShopInfo :shop="item" :noBottom="true" />
+  </div>
+  <div class="content"><Content /></div>
 </template>
 
 <script>
-import ShopInfo from '../../components/ShopInfo'
 import { useRouter, useRoute } from 'vue-router'
 // eslint-disable-next-line no-unused-vars
 import { ref, reactive, toRefs } from 'vue'
 // eslint-disable-next-line no-unused-vars
 import { get } from '../../utils/request'
-
+import ShopInfo from '../../components/ShopInfo'
+import Content from './Content.vue'
 // 路由后退
 const useRouterBackEffect = () => {
   const router = useRouter()
@@ -55,7 +56,8 @@ const useShopInfoEffect = () => {
 export default {
   name: 'Shop',
   components: {
-    ShopInfo
+    ShopInfo,
+    Content
   },
   setup() {
     const { handleBackClick } = useRouterBackEffect()
@@ -70,7 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../..//style/viriables.scss';
+@import '../../style/viriables.scss';
 .wrapper {
   padding: 0 0.18rem;
   .search {
@@ -115,5 +117,8 @@ export default {
       }
     }
   }
+}
+.shop_content {
+  padding: 0 0.18rem;
 }
 </style>
