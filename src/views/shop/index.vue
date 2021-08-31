@@ -13,8 +13,8 @@
         />
       </div>
     </div>
-    <div class="shop">
-      <ShopInfo :shop="item" />
+    <div>
+      <ShopInfo :shop="item" :noBottom="true" />
     </div>
   </div>
 </template>
@@ -114,8 +114,6 @@ export default {
         }
       }
     }
-  }
-  .shop {
   }
 }
 </style>

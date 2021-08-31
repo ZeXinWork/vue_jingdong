@@ -1,7 +1,7 @@
 <template>
   <div class="shop">
     <img :src="shop.imgUrl" class="shop__img" />
-    <div class="shop__content">
+    <div :class="{ shop__content: true, 'shop__content--bottom': !noBottom }">
       <div class="shop__content__title">{{ shop.name }}</div>
       <div class="shop__content__tags">
         <span class="shop__content__tag">月售{{ shop.sales }}+</span>
@@ -22,6 +22,10 @@ export default {
     shop: {
       type: Object,
       require: true
+    },
+    noBottom: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -37,10 +41,14 @@ export default {
     width: 0.56rem;
     height: 0.56rem;
   }
+
+  &__content--bottom {
+    border-bottom: 1px solid $content-bgcolor;
+  }
   &__content {
     flex: 1;
     padding-bottom: 0.12rem;
-    border-bottom: 1px solid $content-bgcolor;
+
     &__title {
       line-height: 0.22rem;
       font-size: 0.16rem;
