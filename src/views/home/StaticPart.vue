@@ -94,7 +94,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../style/viriables.scss';
 @import '../../style/mixins.scss';
-
 //顶部地址样式
 .position {
   padding: 0.16rem 0.24rem 0.16rem 0;
